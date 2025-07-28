@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: aaa // Use the official Postgres image
+    container_name: xxx // Name the container for easier management
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: team_service // Use the DB name from .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

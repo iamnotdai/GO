@@ -1,0 +1,227 @@
+basePath: /
+definitions:
+  dtos.AddUserToTeamInput:
+    properties:
+      userId:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+    required:
+    - userId
+    type: object
+  dtos.CreateTeamInput:
+    properties:
+      managers:
+        items:
+          properties:
+            managerId:
+              type: string
+          required:
+          - managerId
+          type: object
+        type: array
+      members:
+        items:
+          properties:
+            memberId:
+              type: string
+          required:
+          - memberId
+          type: object
+        type: array
+      teamName:
+        type: string
+    required:
+    - teamName
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: API quản lý team
+  title: Team Service API
+  version: "1.0"
+paths:
+  /teams:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateTeamInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Tạo team mới
+      tags:
+      - Teams
+  /teams/{teamId}/managers:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: teamId
+        required: true
+        type: string
+      - description: Manager data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AddUserToTeamInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Thêm manager vào team
+      tags:
+      - Teams
+  /teams/{teamId}/managers/{managerId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: teamId
+        required: true
+        type: string
+      - description: Manager ID
+        in: path
+        name: managerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Xoá manager khỏi team
+      tags:
+      - Teams
+  /teams/{teamId}/members:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: teamId
+        required: true
+        type: string
+      - description: Member data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AddUserToTeamInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Thêm thành viên vào team
+      tags:
+      - Teams
+  /teams/{teamId}/members/{memberId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: teamId
+        required: true
+        type: string
+      - description: Member ID
+        in: path
+        name: memberId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Xoá thành viên khỏi team
+      tags:
+      - Teams
+security:
+- BearerAuth: []
+securityDefinitions:
+  BearerAuth:
+    description: 'Nhập token theo dạng: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
