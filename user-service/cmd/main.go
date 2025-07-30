@@ -4,6 +4,7 @@ import (
 	"log"
 	"user-service/config"
 	"user-service/database"
+	"user-service/logger"
 	"user-service/routers"
 
 	"github.com/joho/godotenv"
@@ -29,6 +30,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Migrate database failed")
 	}
+
+	logger.Init("user-service")
 
 	r := routers.SetupRouter(db)
 
