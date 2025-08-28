@@ -34,6 +34,16 @@ func main() {
 		log.Fatal("Unable to load config")
 	}
 
+	// Init Redis
+	config.InitRedis(cfg)
+
+	// Init Kafka
+	producer, err := config.InitKafka(cfg)
+	if err != nil {
+		log.Fatal("Unable to init Kafka producer:", err)
+	}
+	defer producer.Close()
+
 	db, err := database.ConnectDatabase(cfg)
 	if err != nil {
 		log.Fatalf("Connect database failed")
@@ -45,7 +55,7 @@ func main() {
 	}
 
 	// Mount các route app
-	r := routers.SetupRouter(db)
+	r := routers.SetupRouter(db, cfg)
 
 	// Mount Swagger
 	swagger.SetupSwagger(r)

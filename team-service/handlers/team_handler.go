@@ -15,7 +15,9 @@ type teamHandler struct {
 }
 
 func TeamHandler(service services.ITeamService) *teamHandler {
-	return &teamHandler{service}
+	return &teamHandler{
+		service,
+	}
 }
 
 // --- Routes binding ---

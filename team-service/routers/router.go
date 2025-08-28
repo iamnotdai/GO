@@ -4,17 +4,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
+	"team-service/config"
 	"team-service/handlers"
 	"team-service/middlewares"
 	"team-service/repositories"
 	"team-service/services"
 )
 
-func SetupRouter(db *gorm.DB) *gin.Engine {
+func SetupRouter(db *gorm.DB, cfg *config.Config) *gin.Engine {
 	router := gin.Default()
 
 	teamRepo := repositories.TeamRepository(db)
-	teamService := services.TeamService(teamRepo)
+	teamService := services.TeamService(teamRepo, cfg)
 	teamHandler := handlers.TeamHandler(teamService)
 
 	// Public routes
